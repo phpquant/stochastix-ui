@@ -1,0 +1,264 @@
+{
+  "app": {
+    "name": "Stochastix"
+  },
+  "navigation": {
+    "newBacktest": "New Backtest",
+    "loadBacktest": "Load Backtest",
+    "dataManagement": "Data Management",
+    "backtestSeparator": "Backtest",
+    "summary": "Summary",
+    "detailedResults": "Detailed Results",
+    "visualAnalysis": "Visual Analysis",
+    "chart": "Chart"
+  },
+  "history": {
+    "title": "Backtest History",
+    "description": "Browse and manage previously executed backtest runs.",
+    "loading": "Loading history...",
+    "empty": "No backtest history found.",
+    "cols": {
+      "runId": "Run ID",
+      "strategy": "Strategy",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "load": "Load",
+    "delete": "Delete"
+  },
+  "colorMode": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "backtest": {
+    "new": {
+      "title": "Launch New Backtest",
+      "description": "Select a strategy and configure its parameters to run a simulation.",
+      "loadingStrategies": "Loading strategies...",
+      "loadingData": "Loading available data...",
+      "noStrategiesFound": "No strategies found. Please ensure the backend is running and strategies are configured.",
+      "noStrategiesFoundDetail": "Please check the backend logs for more information.",
+      "launchButton": "Launch Backtest",
+      "launchingButton": "Launching...",
+      "inputsFor": "Strategy inputs for: {strategyName}",
+      "noInputs": "This strategy has no configurable inputs.",
+      "coreConfigTitle": "Core Configuration",
+      "form": {
+        "strategy": {
+          "label": "Strategy",
+          "placeholder": "Select a strategy"
+        },
+        "symbol": {
+          "label": "Symbol",
+          "placeholder": "Select a symbol"
+        },
+        "timeframe": {
+          "label": "Timeframe"
+        },
+        "startDate": {
+          "label": "Start Date"
+        },
+        "endDate": {
+          "label": "End Date"
+        },
+        "initialCapital": {
+          "label": "Initial Capital"
+        },
+        "useDateRange": {
+          "label": "Specify date range (otherwise, full range is used)"
+        },
+        "array": {
+          "placeholder": "Select items"
+        }
+      }
+    }
+  },
+  "results": {
+    "page": {
+      "title": "Backtest Run",
+      "idLabel": "ID:",
+      "chartPlaceholder": "Chart component will be implemented next.",
+      "progress": {
+        "titleRunning": "Running...",
+        "titleConnecting": "Connecting...",
+        "messageInitializing": "Initializing backtest...",
+        "messageProcessing": "Processing bar {processed} of {total}...",
+        "messageCompleted": "Backtest finished successfully.",
+        "messageConnectionFailed": "Connection to progress stream failed.",
+        "alertTitleFailed": "Backtest Failed",
+        "alertErrorDefault": "An unexpected error occurred."
+      }
+    },
+    "summary": {
+      "title": "Performance Summary",
+      "finalCapital": "Final Capital",
+      "netPnl": "Net PnL",
+      "netPnlPercent": "Net PnL %",
+      "totalTrades": "Total Trades",
+      "winningTrades": "Winning Trades",
+      "losingTrades": "Losing Trades",
+      "winRate": "Win Rate"
+    },
+    "detailed": {
+      "title": "Detailed Results",
+      "pairStats": "Pair Stats",
+      "enterTagStats": "Enter Tag Stats",
+      "exitTagStats": "Exit Reason Stats",
+      "summaryMetrics": "Summary Metrics",
+      "groups": {
+        "general": "General",
+        "performance": "Performance",
+        "drawdown": "Drawdown",
+        "timing": "Durations & Streaks"
+      },
+      "cols": {
+        "pair": "Pair",
+        "enterTag": "Enter Tag",
+        "exitReason": "Exit Reason",
+        "trades": "Trades",
+        "avgProfitPct": "Avg Profit %",
+        "totalProfit": "Total Profit",
+        "totalProfitPct": "Total Profit %",
+        "avgDurationMin": "Avg Duration",
+        "wins": "Wins",
+        "draws": "Draws",
+        "losses": "Losses"
+      },
+      "metrics": {
+        "backtestingFrom": "Backtesting From",
+        "backtestingTo": "Backtesting To",
+        "maxOpenTrades": "Max Open Trades",
+        "totalTrades": "Total Trades",
+        "dailyAvgTrades": "Daily Avg Trades",
+        "startingBalance": "Starting Balance",
+        "finalBalance": "Final Balance",
+        "absProfit": "Absolute Profit",
+        "totalProfitPercentage": "Total Profit %",
+        "cagrPercentage": "CAGR %",
+        "profitFactor": "Profit Factor",
+        "sharpe": "Sharpe Ratio",
+        "sortino": "Sortino Ratio",
+        "calmar": "Calmar Ratio",
+        "expectancy": "Expectancy",
+        "expectancyRatio": "Expectancy Ratio",
+        "avgDurationWinnersMin": "Avg Duration (Winners)",
+        "avgDurationLosersMin": "Avg Duration (Losers)",
+        "maxConsecutiveWins": "Max Consecutive Wins",
+        "maxConsecutiveLosses": "Max Consecutive Losses",
+        "maxAccountUnderwaterPercentage": "Max Drawdown %",
+        "absoluteDrawdown": "Absolute Drawdown",
+        "marketChangePercentage": "Market Change %"
+      }
+    },
+    "visualAnalysis": {
+      "title": "Visual Analysis",
+      "equityCurve": "Equity Curve",
+      "drawdownCurve": "Drawdown Curve",
+      "betaChart": "Beta (30d Rolling)",
+      "alphaChart": "Alpha (30d Rolling)"
+    },
+    "tradesLog": {
+      "title": "Trades Log",
+      "columns": {
+        "tradeNumber": "#",
+        "direction": "Direction",
+        "symbol": "Symbol",
+        "entryTime": "Entry Time",
+        "exitTime": "Exit Time",
+        "entryPrice": "Entry Price",
+        "exitPrice": "Exit Price",
+        "quantity": "Quantity",
+        "pnl": "Net PnL",
+        "enterTags": "Enter Tags",
+        "exitTags": "Exit Tags"
+      }
+    },
+    "openPositionsLog": {
+      "title": "Open Positions",
+      "columns": {
+        "symbol": "Symbol",
+        "direction": "Direction",
+        "entryTime": "Entry Time",
+        "entryPrice": "Entry Price",
+        "quantity": "Quantity",
+        "currentPrice": "Current Price",
+        "unrealizedPnl": "Unrealized PnL"
+      }
+    },
+    "chart": {
+      "showLabels": "Show Labels",
+      "noData": "Could not load chart data."
+    }
+  },
+  "data": {
+    "management": {
+      "title": "Data Management",
+      "description": "Manage local market data and download new datasets from supported exchanges.",
+      "empty": "No local market data found.",
+      "availableTitle": "Available Local Data",
+      "timeframe": "Timeframe",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "records": "Records",
+      "actions": "Actions",
+      "inspect": "Inspect"
+    },
+    "inspect": {
+      "title": "Inspect Dataset",
+      "subtitle": "{symbol} ({timeframe}) on {exchange}",
+      "loading": "Inspecting data file...",
+      "validation": {
+        "title": "Validation Report",
+        "passed": "Validation Passed",
+        "failed": "Validation Failed",
+        "skipped": "Validation Skipped"
+      },
+      "fileInfo": "File Information",
+      "headerInfo": "File Header",
+      "dataSample": "Data Sample",
+      "head": "First 5 Records",
+      "tail": "Last 5 Records",
+      "gaps": "Gaps Detected",
+      "duplicates": "Duplicates Detected",
+      "outOfOrder": "Out-of-Order Records Detected",
+      "noIssues": "No issues found in this category.",
+      "cols": {
+        "timestamp": "Timestamp",
+        "utc": "UTC",
+        "open": "Open",
+        "high": "High",
+        "low": "Low",
+        "close": "Close",
+        "volume": "Volume"
+      }
+    },
+    "download": {
+      "title": "Download New Data",
+      "description": "Select an exchange and symbols to download new market data.",
+      "form": {
+        "exchange": {
+          "label": "Exchange",
+          "placeholder": "Select an exchange"
+        },
+        "symbols": {
+          "label": "Symbols",
+          "placeholder": "Select symbols"
+        },
+        "timeframes": {
+          "label": "Timeframes",
+          "placeholder": "Select timeframes"
+        },
+        "startDate": {
+          "label": "Start Date"
+        },
+        "endDate": {
+          "label": "End Date"
+        },
+        "submitButton": "Queue Downloads"
+      },
+      "progress": {
+        "title": "Download Queue"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<template>
+    <div v-if="downloadStore.downloadQueue.length > 0">
+        <h3 class="text-lg font-semibold mt-8 mb-2">{{ t('data.download.progress.title') }}</h3>
+        <UCard>
+            <div class="space-y-4">
+                <div v-for="job in downloadStore.downloadQueue" :key="job.key">
+                    <div class="flex justify-between items-center gap-4">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <UIcon v-if="job.status === 'completed'" name="i-heroicons-check-circle-20-solid" class="text-green-500 w-5 h-5 flex-shrink-0" />
+                            <UIcon v-else-if="job.status === 'downloading'" name="i-heroicons-arrow-down-tray-20-solid" class="animate-pulse w-5 h-5 flex-shrink-0" />
+                            <UIcon v-else-if="job.status === 'failed'" name="i-heroicons-exclamation-circle-20-solid" class="text-red-500 w-5 h-5 flex-shrink-0" />
+                            <UIcon v-else name="i-heroicons-pause-circle-20-solid" class="text-gray-400 w-5 h-5 flex-shrink-0" />
+                            <p class="text-sm truncate">
+                                <strong>{{ job.symbol }}</strong> [{{ job.timeframe }}]
+                                <span class="text-gray-500 dark:text-gray-400">- {{ job.message }}</span>
+                            </p>
+                        </div>
+                        <UProgress v-if="job.status === 'downloading'" :value="job.progress" class="w-32" />
+                    </div>
+                </div>
+            </div>
+        </UCard>
+    </div>
+</template>
+
+<script setup lang="ts">
+const { t } = useI18n();
+const downloadStore = useDataDownloadStore();
+</script>

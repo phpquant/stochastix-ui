@@ -1,0 +1,13 @@
+services:
+    nuxt:
+        build:
+            context: .
+        environment:
+            NUXT_API_BASE_SERVER: http://php
+        networks:
+            - stochastix_net
+        command: npm run dev -- --host 0.0.0.0
+
+networks:
+    stochastix_net:
+        external: true
