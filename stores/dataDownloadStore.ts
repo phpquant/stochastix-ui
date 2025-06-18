@@ -3,7 +3,8 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
     const { public: { apiUrl } } = useRuntimeConfig();
 
     // --- State ---
-    const exchanges = ref(['okx', 'binance', 'bybit']); // Mocked exchange list
+    const exchanges = ref<string[]>([]);
+    const exchangesStatus = ref<LoadingStatus>('idle');
     const symbolsByExchange = reactive<Record<string, { list: string[], status: LoadingStatus }>>({});
     const downloadQueue = ref<DownloadJob[]>([]);
     const isQueueRunning = ref(false);
@@ -11,7 +12,30 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
     // --- Actions ---
 
     /**
-     * Fetches (currently mocked) symbols for a given exchange.
+     * Fetches the list of available exchanges from the API.
+     */
+    async function fetchExchanges() {
+        if (exchanges.value.length > 0 || exchangesStatus.value === 'loading') {
+            return;
+        }
+
+        exchangesStatus.value = 'loading';
+        try {
+            exchanges.value = await $fetch<string[]>('/api/data/exchanges');
+            exchangesStatus.value = 'success';
+        } catch (e: any) {
+            exchangesStatus.value = 'error';
+            toast.add({
+                title: 'Error Fetching Exchanges',
+                description: e.data?.error || 'Could not fetch the list of exchanges.',
+                color: 'error',
+                icon: 'i-heroicons-exclamation-triangle-20-solid',
+            });
+        }
+    }
+
+    /**
+     * Fetches symbols for a given exchange.
      */
     async function fetchSymbols(exchangeId: string) {
         if (!exchangeId || symbolsByExchange[exchangeId]?.status === 'loading') {
@@ -144,9 +168,11 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
 
     return {
         exchanges,
+        exchangesStatus,
         symbolsByExchange,
         downloadQueue,
         isQueueRunning,
+        fetchExchanges,
         fetchSymbols,
         queueDownloads,
     };
