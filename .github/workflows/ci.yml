@@ -91,3 +91,11 @@ jobs:
           asset_path: ./${{ env.ARTIFACT_NAME }}
           asset_name: ${{ env.ARTIFACT_NAME }}
           asset_content_type: application/gzip
+
+      - name: Trigger Installer Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: phpquant/stochastix
+          event-type: new-ui-release
+          client-payload: '{"version": "${{ env.VERSION }}"}'
