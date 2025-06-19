@@ -13,6 +13,8 @@
                         v-model="formState.exchangeId"
                         :items="downloadStore.exchanges"
                         :placeholder="t('data.download.form.exchange.placeholder')"
+                        :loading="downloadStore.exchangesStatus === 'loading'"
+                        :disabled="downloadStore.exchangesStatus !== 'success'"
                     />
                 </UFormField>
 
@@ -85,6 +87,10 @@ const isSymbolsLoading = computed(() => {
 const symbolsForSelectedExchange = computed(() => {
     if (!formState.exchangeId) return [];
     return downloadStore.symbolsByExchange[formState.exchangeId]?.list ?? [];
+});
+
+onMounted(() => {
+    downloadStore.fetchExchanges();
 });
 
 watch(() => formState.exchangeId, (newExchangeId) => {

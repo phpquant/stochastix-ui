@@ -1,9 +1,11 @@
 export const useDataDownloadStore = defineStore('dataDownload', () => {
     const toast = useToast();
     const { public: { apiUrl } } = useRuntimeConfig();
+    const dataAvailabilityStore = useDataAvailabilityStore();
 
     // --- State ---
-    const exchanges = ref(['okx', 'binance', 'bybit']); // Mocked exchange list
+    const exchanges = ref<string[]>([]);
+    const exchangesStatus = ref<LoadingStatus>('idle');
     const symbolsByExchange = reactive<Record<string, { list: string[], status: LoadingStatus }>>({});
     const downloadQueue = ref<DownloadJob[]>([]);
     const isQueueRunning = ref(false);
@@ -11,7 +13,30 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
     // --- Actions ---
 
     /**
-     * Fetches (currently mocked) symbols for a given exchange.
+     * Fetches the list of available exchanges from the API.
+     */
+    async function fetchExchanges() {
+        if (exchanges.value.length > 0 || exchangesStatus.value === 'loading') {
+            return;
+        }
+
+        exchangesStatus.value = 'loading';
+        try {
+            exchanges.value = await $fetch<string[]>('/api/data/exchanges');
+            exchangesStatus.value = 'success';
+        } catch (e: any) {
+            exchangesStatus.value = 'error';
+            toast.add({
+                title: 'Error Fetching Exchanges',
+                description: e.data?.error || 'Could not fetch the list of exchanges.',
+                color: 'error',
+                icon: 'i-heroicons-exclamation-triangle-20-solid',
+            });
+        }
+    }
+
+    /**
+     * Fetches symbols for a given exchange.
      */
     async function fetchSymbols(exchangeId: string) {
         if (!exchangeId || symbolsByExchange[exchangeId]?.status === 'loading') {
@@ -108,6 +133,29 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
     }
 
     /**
+     * Sends a cancellation request for a specific job.
+     * @param jobId The ID of the job to cancel.
+     */
+    async function cancelDownload(jobId: string) {
+        try {
+            await $fetch(`/api/data/download/${jobId}`, {
+                method: 'DELETE'
+            });
+            toast.add({
+                title: 'Cancellation Requested',
+                description: `A request to cancel job ${jobId} has been sent.`,
+                color: 'info'
+            });
+        } catch (e: any) {
+            toast.add({
+                title: 'Cancellation Error',
+                description: e.data?.error || `Could not request cancellation for job ${jobId}.`,
+                color: 'error'
+            });
+        }
+    }
+
+    /**
      * Listens to a Mercure stream for a specific download job.
      */
     function listenToMercureProgress(job: DownloadJob): Promise<void> {
@@ -122,11 +170,12 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
                 job.progress = data.progress || job.progress;
                 job.message = data.message || job.message;
 
-                if (data.status === 'completed' || data.status === 'failed') {
+                if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
                     job.status = data.status;
                     eventSource.close();
-                    downloadQueue.value.shift(); // Remove completed/failed job
-                    processQueue(); // Process next in queue
+                    downloadQueue.value.shift();
+                    dataAvailabilityStore.fetchManifest(true);
+                    processQueue();
                     resolve();
                 }
             };
@@ -136,6 +185,7 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
                 job.message = 'Connection to progress stream failed.';
                 eventSource.close();
                 downloadQueue.value.shift();
+                dataAvailabilityStore.fetchManifest(true);
                 processQueue();
                 resolve();
             };
@@ -144,10 +194,13 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
 
     return {
         exchanges,
+        exchangesStatus,
         symbolsByExchange,
         downloadQueue,
         isQueueRunning,
+        fetchExchanges,
         fetchSymbols,
         queueDownloads,
+        cancelDownload,
     };
 });

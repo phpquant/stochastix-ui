@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <UAlert v-else icon="i-heroicons-circle-stack" :title="t('data.management.empty')" />
+            <UAlert v-else icon="i-heroicons-circle-stack" :title="t('data.management.empty')" color="neutral" variant="soft"/>
         </div>
     </div>
 </template>

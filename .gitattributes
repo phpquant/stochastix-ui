@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.html text eol=lf
+*.ini text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.vue text eol=lf
+*.ts text eol=lf
+
+*.ico binary
+*.png binary

@@ -5,8 +5,8 @@ export const useDataAvailabilityStore = defineStore('dataAvailability', () => {
 
     const isLoading = computed(() => status.value === 'loading');
 
-    async function fetchManifest() {
-        if (manifest.value.length > 0) return;
+    async function fetchManifest(force = false) {
+        if (manifest.value.length > 0 && !force) return;
 
         status.value = 'loading';
         try {
