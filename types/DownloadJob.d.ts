@@ -5,7 +5,7 @@ declare interface DownloadJob {
     timeframe: string;
     startDate: string;
     endDate: string;
-    status: 'pending' | 'downloading' | 'completed' | 'failed';
+    status: 'pending' | 'downloading' | 'completed' | 'failed' | 'cancelled';
     progress: number;
     message: string;
     jobId?: string; // Mercure Job ID

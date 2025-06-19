@@ -125,9 +125,31 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
             job.status = 'failed';
             job.message = e.data?.error || 'Failed to start download.';
             toast.add({ title: 'Download Error', description: job.message, color: 'error' });
-            // Move to the next job even if this one fails to start
             downloadQueue.value.shift();
             processQueue();
+        }
+    }
+
+    /**
+     * Sends a cancellation request for a specific job.
+     * @param jobId The ID of the job to cancel.
+     */
+    async function cancelDownload(jobId: string) {
+        try {
+            await $fetch(`/api/data/download/${jobId}`, {
+                method: 'DELETE'
+            });
+            toast.add({
+                title: 'Cancellation Requested',
+                description: `A request to cancel job ${jobId} has been sent.`,
+                color: 'info'
+            });
+        } catch (e: any) {
+            toast.add({
+                title: 'Cancellation Error',
+                description: e.data?.error || `Could not request cancellation for job ${jobId}.`,
+                color: 'error'
+            });
         }
     }
 
@@ -146,11 +168,11 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
                 job.progress = data.progress || job.progress;
                 job.message = data.message || job.message;
 
-                if (data.status === 'completed' || data.status === 'failed') {
+                if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
                     job.status = data.status;
                     eventSource.close();
-                    downloadQueue.value.shift(); // Remove completed/failed job
-                    processQueue(); // Process next in queue
+                    downloadQueue.value.shift();
+                    processQueue();
                     resolve();
                 }
             };
@@ -175,5 +197,6 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
         fetchExchanges,
         fetchSymbols,
         queueDownloads,
+        cancelDownload,
     };
 });
