@@ -1,6 +1,7 @@
 export const useDataDownloadStore = defineStore('dataDownload', () => {
     const toast = useToast();
     const { public: { apiUrl } } = useRuntimeConfig();
+    const dataAvailabilityStore = useDataAvailabilityStore();
 
     // --- State ---
     const exchanges = ref<string[]>([]);
@@ -125,6 +126,7 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
             job.status = 'failed';
             job.message = e.data?.error || 'Failed to start download.';
             toast.add({ title: 'Download Error', description: job.message, color: 'error' });
+            // Move to the next job even if this one fails to start
             downloadQueue.value.shift();
             processQueue();
         }
@@ -172,6 +174,7 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
                     job.status = data.status;
                     eventSource.close();
                     downloadQueue.value.shift();
+                    dataAvailabilityStore.fetchManifest(true);
                     processQueue();
                     resolve();
                 }
@@ -182,6 +185,7 @@ export const useDataDownloadStore = defineStore('dataDownload', () => {
                 job.message = 'Connection to progress stream failed.';
                 eventSource.close();
                 downloadQueue.value.shift();
+                dataAvailabilityStore.fetchManifest(true);
                 processQueue();
                 resolve();
             };
