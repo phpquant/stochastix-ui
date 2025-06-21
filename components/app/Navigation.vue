@@ -34,6 +34,11 @@ const defaultLinks = computed(() => [
         icon: 'i-heroicons-circle-stack-20-solid',
         to: '/data',
     },
+    {
+        label: 'Chart Explorer',
+        icon: 'i-heroicons-chart-bar-20-solid',
+        to: '/explore',
+    }
 ]);
 
 const backtestLinks = computed(() => {
